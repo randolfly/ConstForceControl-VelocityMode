@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="MotorDegreeToCablePosition" Id="{f08e5447-b4e4-47a6-9e6f-4eca85de6f25}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK MotorDegreeToCablePosition
+VAR_IN_OUT
+	motor_position : LREAL;	// deg/s
+	reset_cable_position : BOOL;	
+END_VAR
+VAR_OUTPUT
+	cable_position : LREAL;
+END_VAR
+VAR
+	winch_radius : LREAL := 16.0;
+END_VAR
+VAR PERSISTENT
+	motor_position_shift : LREAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF reset_cable_position THEN
+	motor_position_shift := motor_position;
+END_IF
+
+cable_position := (motor_position - motor_position_shift) * Tc2_System.PI / 180.0 * winch_radius;]]></ST>
+    </Implementation>
+    <LineIds Name="MotorDegreeToCablePosition">
+      <LineId Id="22" Count="0" />
+      <LineId Id="24" Count="1" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

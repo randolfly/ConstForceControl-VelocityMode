@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="CableVelocityToMotorAngularVelocity" Id="{3d32bdbe-11b5-4ae5-bf28-72298521e5c1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CableVelocityToMotorAngularVelocity : LREAL
+VAR_INPUT
+	cable_velocity : LREAL;
+END_VAR
+VAR_OUTPUT
+	motor_velocity : DINT;
+END_VAR
+VAR
+	velocity_ratio : LREAL := 17895.697;	// motor unit: rev/(2^30 ms) => 1 rpm = 17895.697 unit
+	winch_radius : LREAL := 16.0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// calculation: cable_velocity/winch_radius/pi*180*60/360 rpm 
+motor_velocity := LREAL_TO_DINT(cable_velocity / winch_radius * 30.0 /Tc2_System.PI * velocity_ratio);]]></ST>
+    </Implementation>
+    <LineIds Name="CableVelocityToMotorAngularVelocity">
+      <LineId Id="19" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

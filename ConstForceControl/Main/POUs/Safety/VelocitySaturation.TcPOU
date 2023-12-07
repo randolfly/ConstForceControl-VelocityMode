@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="VelocitySaturation" Id="{cdf42157-1b62-4c84-b11b-9950500958e8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION VelocitySaturation : LREAL
+VAR_IN_OUT
+	velocity : LREAL;
+	max_velocity : LREAL;
+	min_velocity : LREAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF velocity > max_velocity THEN
+	velocity := max_velocity;
+END_IF
+IF velocity < min_velocity THEN
+	velocity := min_velocity;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="VelocitySaturation">
+      <LineId Id="29" Count="4" />
+      <LineId Id="27" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

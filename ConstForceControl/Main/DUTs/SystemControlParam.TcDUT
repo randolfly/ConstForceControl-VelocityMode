@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <DUT Name="SystemControlParam" Id="{648d47d6-3151-4b6d-9830-237ee8a4c175}">
+    <Declaration><![CDATA[TYPE SystemControlParam :
+STRUCT
+	is_motor_poweron : BOOL;
+	is_system_exit : BOOL;
+	is_system_control : BOOL;
+	system_control_mode : SystemControlMode;
+	
+	// Debug
+	is_motor_jog : BOOL;
+	jog_param : JogParam;
+	// ConstForce
+	is_force_control : BOOL;
+	force_control_param : ForceControlParam;
+	
+	// Other Param
+	motor_degree2cable_position_param : MotorDegreeToCablePositionParam;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

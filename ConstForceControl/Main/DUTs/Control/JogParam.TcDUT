@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <DUT Name="JogParam" Id="{387b140f-97c7-498d-bbbc-f7e9eba91cc9}">
+    <Declaration><![CDATA[TYPE JogParam :
+STRUCT
+	jog_velocity : LREAL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

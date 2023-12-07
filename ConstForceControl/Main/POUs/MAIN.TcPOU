@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="MAIN" Id="{13aa0b6a-1832-4149-b405-c6ea458a212e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	sensor_data : SensorData;
+	MotorDegreeToCablePosition : MotorDegreeToCablePosition;	
+
+	SystemControl : SystemControl;
+	system_control_param : SystemControlParam;
+	motor_state : MotorState;
+	motor_param : MotorParam;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// 系统状态读取
+GVL.axis1.ReadStatus();
+motor_state.is_motor_closedloop := GVL.axis1.Status.ControlLoopClosed;
+motor_state.axis_position_raw := GVL.axis1.NcToPlc.ActPos;
+motor_state.axis_velocity_raw := GVL.axis1.NcToPlc.ActVelo;
+
+// 电机参数转换
+MotorDegreeToCablePosition(
+	motor_position:= motor_state.axis_position_raw, 
+	reset_cable_position:= system_control_param.motor_degree2cable_position_param.reset_cable_position, 
+	cable_position=> motor_state.cable_position);
+MotorAngularVelocityToCableVelocity(motor_velocity:= motor_state.axis_velocity_raw, cable_velocity=> motor_state.cable_velocity);
+
+// 控制状态机
+SystemControl(
+	motor_axis:= GVL.axis1, 
+	system_control_param:= system_control_param, 
+	motor_state:= motor_state, 
+	target_velocity=> motor_param.target_cable_velocity);
+
+// 安全限制 
+VelocitySaturation(
+	velocity:= motor_param.target_cable_velocity, 
+	max_velocity:= motor_param.max_cable_velocity, 
+	min_velocity:= motor_param.min_cable_velocity);
+
+// 电机参数转换
+CableVelocityToMotorAngularVelocity(cable_velocity:= motor_param.target_cable_velocity, motor_velocity=> motor_param.target_axis_velocity_raw);
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="13" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="60" Count="2" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="3" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="2" />
+      <LineId Id="29" Count="1" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="31" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

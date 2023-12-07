@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="MotorAngularVelocityToCableVelocity" Id="{c1aa46c1-63df-4cf7-884e-dbfb053fb6ea}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION MotorAngularVelocityToCableVelocity : LREAL
+VAR_INPUT
+	motor_velocity : LREAL;	// deg/s
+END_VAR
+VAR_OUTPUT
+	cable_velocity : LREAL;
+END_VAR
+VAR
+	winch_radius : LREAL := 16.0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[cable_velocity := motor_velocity * Tc2_System.PI / 180.0 * winch_radius;]]></ST>
+    </Implementation>
+    <LineIds Name="MotorAngularVelocityToCableVelocity">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

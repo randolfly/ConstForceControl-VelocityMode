@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <DUT Name="MotorState" Id="{4c45b124-eaf6-4273-a097-218a781c79e7}">
+    <Declaration><![CDATA[TYPE MotorState :
+STRUCT
+	// 原始电机位置、速度，直接从axis返回
+	axis_position_raw : LREAL;
+	axis_velocity_raw : LREAL;
+	
+	// 电机位置、速度，转换为放绳量，单位mm
+	cable_position : LREAL;
+	cable_velocity : LREAL;
+	
+	// 电机驱动器状态
+	is_motor_closedloop : BOOL;		// 电机是否已经进入闭环使能状态，可以进行运动控制
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
